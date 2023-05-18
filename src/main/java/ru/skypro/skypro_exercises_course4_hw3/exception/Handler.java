@@ -5,13 +5,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 @RestControllerAdvice
 public class Handler {
-    @ExceptionHandler(value = {SQLException.class, IOException.class})
-    public ResponseEntity<?> handlerSQLException(SQLException sqlException) {
-       return new ResponseEntity<>(sqlException.getMessage(), HttpStatus.UNAUTHORIZED);
+    @ExceptionHandler
+//    @ExceptionHandler(value = {IndexOutOfBoundsException.class, IOException.class})
+    public ResponseEntity<?> handlerSQLException(IndexOutOfBoundsException indexOutOfBoundsException) {
+        return new ResponseEntity<>("Index out of bounds", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+//    @ExceptionHandler(value = {IndexOutOfBoundsException.class, IOException.class})
+    public ResponseEntity<?> handlerNumberFormatException(NumberFormatException numberFormatException) {
+        return new ResponseEntity<>("Wrong number format", HttpStatus.BAD_REQUEST);
     }
 }

@@ -6,6 +6,7 @@ import ru.skypro.skypro_exercises_course4_hw3.pojo.Employee;
 import ru.skypro.skypro_exercises_course4_hw3.repository.EmployeeRepository;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -13,28 +14,29 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     @Override
-//    @Profile("test-y")
-    public int getEmployeeCount() {
-        return employeeRepository.getEmployeeCount();
+    public void addEmployee(Employee[] employee) {
+        employeeRepository.addEmployee(employee);
     }
 
     @Override
-    public int getEmployeeSalarySum() {
-        return employeeRepository.getEmployeeSalarySum();
+    public void putEmployee(Map<String, String> params) {
+//        int id = Integer.parseInt(params.get("id"));
+        employeeRepository.putEmployee(params);
     }
 
-    @Override
-    public Employee getEmployeeSalaryMin() {
-        return employeeRepository.getEmployeeSalaryMin();
+    public Employee getEmployee(Integer id) {
+        return employeeRepository.getEmployee(id);
     }
 
-    @Override
-    public Employee getEmployeeSalaryMax() {
-        return employeeRepository.getEmployeeSalaryMax();
+    public void delEmployee(Integer id) {
+        employeeRepository.delEmployee(id);
     }
 
-    @Override
-    public List<Employee> getEmployeesWithSalaryMoreThen() {
-        return employeeRepository.getEmployeesWithSalaryMoreThen();
+    public List<Employee> getEmployeeWithSalaryHigherThan(int salary) {
+        return employeeRepository.getsalaryHigherThan(salary);
+    }
+
+    public int getSize() {
+        return employeeRepository.getSize();
     }
 }
