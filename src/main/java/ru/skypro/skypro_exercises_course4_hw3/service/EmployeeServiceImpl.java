@@ -6,7 +6,6 @@ import ru.skypro.skypro_exercises_course4_hw3.pojo.Employee;
 import ru.skypro.skypro_exercises_course4_hw3.repository.EmployeeRepository;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -14,14 +13,24 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     @Override
-    public void addEmployee(Employee[] employee) {
-        employeeRepository.addEmployee(employee);
+    public void addEmployees(Employee[] employee) {
+        employeeRepository.addEmployees(employee);
     }
 
     @Override
-    public void putEmployee(Map<String, String> params) {
+    public void addEmployee(Employee employee) {
+        employeeRepository.addEmployee(employee);
+    }
+
+    /*    @Override
+        public void putEmployee(Map<String, String> params) {
+    //        int id = Integer.parseInt(params.get("id"));
+            employeeRepository.putEmployee(params);
+        }*/
+    @Override
+    public void putEmployee(Integer id, Employee employee) {
 //        int id = Integer.parseInt(params.get("id"));
-        employeeRepository.putEmployee(params);
+        employeeRepository.putEmployee(id, employee);
     }
 
     public Employee getEmployee(Integer id) {

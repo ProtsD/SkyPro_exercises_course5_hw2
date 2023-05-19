@@ -6,8 +6,6 @@ import ru.skypro.skypro_exercises_course4_hw3.pojo.Employee;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -16,18 +14,24 @@ import java.util.stream.Collectors;
 public class EmployeeRepositoryImpl implements EmployeeRepository {
     public List<Employee> employeeList = new ArrayList<>();
 
-    public EmployeeRepositoryImpl() {
-        employeeList.add(new Employee(1, "Катя", 90_000));
-        employeeList.add(new Employee(2, "Дима", 102_000));
-        employeeList.add(new Employee(3, "Олег", 80_000));
-        employeeList.add(new Employee(4, "Вика", 165_000));
-    }
-
     @Override
-    public void addEmployee(Employee[] employee) {
+    public void addEmployees(Employee[] employee) {
         employeeList.addAll(List.of(employee));
     }
 
+    public void addEmployee(Employee employee) {
+        employeeList.add(employee);
+    }
+    @Override
+    public void putEmployee(Integer id, Employee employee) {
+        employee.setId(id);
+        int index = employeeList.indexOf(employee);
+        employeeList.set(index, employee);
+        for (Employee e : employeeList) {
+            System.out.println(e);
+        }
+    }
+/*    @Override
     public void putEmployee(Map<String, String> params) {
         Employee employee = new Employee();
 
@@ -54,7 +58,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
         for (Employee e : employeeList) {
             System.out.println(e);
         }
-    }
+    }*/
 
     @Override
     public Employee getEmployee(Integer id) {

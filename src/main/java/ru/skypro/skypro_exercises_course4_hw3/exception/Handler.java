@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class Handler {
     @ExceptionHandler
-//    @ExceptionHandler(value = {IndexOutOfBoundsException.class, IOException.class})
     public ResponseEntity<?> handlerSQLException(IndexOutOfBoundsException indexOutOfBoundsException) {
         return new ResponseEntity<>("Index out of bounds", HttpStatus.BAD_REQUEST);
     }
