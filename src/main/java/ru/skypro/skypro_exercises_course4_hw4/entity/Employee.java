@@ -1,4 +1,4 @@
-package ru.skypro.skypro_exercises_course4_hw3.pojo;
+package ru.skypro.skypro_exercises_course4_hw4.entity;
 
 import lombok.*;
 
