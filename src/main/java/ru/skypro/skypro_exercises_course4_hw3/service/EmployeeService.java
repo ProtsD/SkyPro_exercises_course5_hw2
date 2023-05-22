@@ -6,14 +6,18 @@ import java.util.List;
 
 public interface EmployeeService {
 
-    int getEmployeeCount();
+    void addEmployee(Employee employee);
 
-    int getEmployeeSalarySum();
+    void addEmployees(Employee[] employee);
 
-    Employee getEmployeeSalaryMin();
+    void putEmployee(Integer id, Employee employee);
+    //    void putEmployee(Map<String, String> params);
+    Employee getEmployee(Integer id);
 
-    Employee getEmployeeSalaryMax();
+    void delEmployee(Integer id);
 
-    List<Employee> getEmployeesWithSalaryMoreThen();
+    List<Employee> getEmployeeWithSalaryHigherThan(int salary);
+
+    int getSize();
 
 }

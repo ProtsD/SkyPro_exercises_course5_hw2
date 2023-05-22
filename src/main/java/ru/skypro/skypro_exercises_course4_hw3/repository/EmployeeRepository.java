@@ -5,13 +5,19 @@ import ru.skypro.skypro_exercises_course4_hw3.pojo.Employee;
 import java.util.List;
 
 public interface EmployeeRepository {
-    int getEmployeeCount();
 
-    int getEmployeeSalarySum();
+    void addEmployee(Employee employee);
 
-    Employee getEmployeeSalaryMin();
+    void addEmployees(Employee[] employee);
 
-    Employee getEmployeeSalaryMax();
+    void putEmployee(Integer id, Employee employee);
+    //    void putEmployee(Map<String, String> params);
+    Employee getEmployee(Integer id);
 
-    List<Employee> getEmployeesWithSalaryMoreThen();
+    void delEmployee(Integer id);
+
+    List<Employee> getsalaryHigherThan(int salary);
+
+    int getSize();
+
 }

@@ -1,12 +1,29 @@
 package ru.skypro.skypro_exercises_course4_hw3.pojo;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-@Data
+import java.util.Objects;
+
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Employee {
-    private final Integer id;
-    private final String name;
-    private final int salary;
+    private Integer id;
+    private String name;
+    private int salary;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(id, employee.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
