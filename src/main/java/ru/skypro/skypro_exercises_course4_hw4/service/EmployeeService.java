@@ -1,23 +1,29 @@
 package ru.skypro.skypro_exercises_course4_hw4.service;
 
-import ru.skypro.skypro_exercises_course4_hw4.entity.Employee;
+import org.springframework.web.bind.annotation.RequestParam;
+import ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeDTO;
+import ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeFullInfo;
 
 import java.util.List;
 
 public interface EmployeeService {
 
-    void addEmployee(Employee employee);
+    void addEmployee(EmployeeDTO employeeDTO);
 
-    void addEmployees(Employee[] employee);
+    void addEmployees(EmployeeDTO[] employeeDTO);
 
-    void putEmployee(Integer id, Employee employee);
-    //    void putEmployee(Map<String, String> params);
-    Employee getEmployee(Integer id);
+    void putEmployee(Integer id, EmployeeDTO employeeDTO);
+
+    EmployeeDTO getEmployee(Integer id);
 
     void delEmployee(Integer id);
 
-    List<Employee> getEmployeeWithSalaryHigherThan(int salary);
+    List<EmployeeDTO> getEmployeeWithSalaryHigherThan(int salary);
 
-    int getSize();
+    List<EmployeeDTO> getEmployeesWithHighestSalary();
 
+    List<EmployeeDTO> getEmployeesOnPosition(Integer position);
+
+    EmployeeFullInfo getEmployeeFullInfo(Integer id);
+    List<EmployeeFullInfo> getEmployeePage(Integer page);
 }

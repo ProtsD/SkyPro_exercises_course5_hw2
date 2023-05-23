@@ -1,23 +1,31 @@
 package ru.skypro.skypro_exercises_course4_hw4.repository;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeDTO;
+import ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeFullInfo;
 import ru.skypro.skypro_exercises_course4_hw4.entity.Employee;
+import ru.skypro.skypro_exercises_course4_hw4.entity.Position;
 
 import java.util.List;
 
-public interface EmployeeRepository {
+public interface EmployeeRepository extends CrudRepository<Employee, Integer> {
 
-    void addEmployee(Employee employee);
+    @Query(value = "SELECT * FROM employee WHERE salary >= :salary", nativeQuery = true)
+    List<Employee> getSalaryHigherThan(@Param("salary") int input);
 
-    void addEmployees(Employee[] employee);
+    @Query(value = "SELECT * FROM employee WHERE salary = (SELECT MAX(salary) FROM employee)", nativeQuery = true)
+    List<Employee> getEmployeesWithHighestSalary();
 
-    void putEmployee(Integer id, Employee employee);
-    //    void putEmployee(Map<String, String> params);
-    Employee getEmployee(Integer id);
+    @Query("SELECT new ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeFullInfo(e.name, e.salary, p.name) " +
+            "FROM Employee e JOIN FETCH Position p WHERE e.position = p and e.id = :id")
+    EmployeeFullInfo getEmployeeFullInfo(@Param("id") Integer id);
 
-    void delEmployee(Integer id);
+/*    @Query(value = "SELECT * FROM employee WHERE id >= 3*:page ORDER BY id LIMIT 3", nativeQuery = true)
+    List<EmployeeFullInfo> getEmployeePage(@Param("page") Integer page);*/
 
-    List<Employee> getsalaryHigherThan(int salary);
-
-    int getSize();
-
+    @Query("SELECT new ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeFullInfo(e.name, e.salary, p.name) " +
+            "FROM Employee e JOIN FETCH Position p WHERE e.position = p ORDER BY e.id")
+    List<EmployeeFullInfo> getEmployeePage();
 }

@@ -2,10 +2,16 @@ package ru.skypro.skypro_exercises_course4_hw4.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeDTO;
+import ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeFullInfo;
 import ru.skypro.skypro_exercises_course4_hw4.entity.Employee;
+import ru.skypro.skypro_exercises_course4_hw4.entity.Position;
 import ru.skypro.skypro_exercises_course4_hw4.repository.EmployeeRepository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -13,39 +19,84 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     @Override
-    public void addEmployees(Employee[] employee) {
-        employeeRepository.addEmployees(employee);
+    public void addEmployees(EmployeeDTO[] employeeDTO) {
+        employeeRepository.saveAll(Arrays.stream(employeeDTO)
+                .map(EmployeeDTO::toEmployee)
+                .toList());
     }
 
     @Override
-    public void addEmployee(Employee employee) {
-        employeeRepository.addEmployee(employee);
+    public void addEmployee(EmployeeDTO employeeDTO) {
+        employeeRepository.save(employeeDTO.toEmployee());
     }
 
-    /*    @Override
-        public void putEmployee(Map<String, String> params) {
-    //        int id = Integer.parseInt(params.get("id"));
-            employeeRepository.putEmployee(params);
-        }*/
     @Override
-    public void putEmployee(Integer id, Employee employee) {
-//        int id = Integer.parseInt(params.get("id"));
-        employeeRepository.putEmployee(id, employee);
+    public void putEmployee(Integer id, EmployeeDTO employeeDTO) {
+        if (employeeRepository.existsById(id)) {
+            employeeDTO.setId(id);
+            employeeRepository.save(employeeDTO.toEmployee());
+        }
     }
 
-    public Employee getEmployee(Integer id) {
-        return employeeRepository.getEmployee(id);
+    @Override
+    public EmployeeDTO getEmployee(Integer id) {
+        if (employeeRepository.findById(id).isPresent()) {
+            return EmployeeDTO.fromEmployee(employeeRepository.findById(id).get());
+        }
+        throw new IndexOutOfBoundsException();
     }
 
+    @Override
     public void delEmployee(Integer id) {
-        employeeRepository.delEmployee(id);
+        employeeRepository.deleteById(id);
     }
 
-    public List<Employee> getEmployeeWithSalaryHigherThan(int salary) {
-        return employeeRepository.getsalaryHigherThan(salary);
+    @Override
+    public List<EmployeeDTO> getEmployeeWithSalaryHigherThan(int salary) {
+        return employeeRepository.getSalaryHigherThan(salary).stream()
+                .map(EmployeeDTO::fromEmployee)
+                .toList();
     }
 
-    public int getSize() {
-        return employeeRepository.getSize();
+    @Override
+    public List<EmployeeDTO> getEmployeesWithHighestSalary() {
+        return employeeRepository.getEmployeesWithHighestSalary().stream()
+                .map(EmployeeDTO::fromEmployee)
+                .toList();
+    }
+
+    @Override
+    public List<EmployeeDTO> getEmployeesOnPosition(Integer position) {
+        List<EmployeeDTO> EmployeeDTOList = new ArrayList<>();
+        if (Optional.ofNullable(position).isPresent()) {
+            for (Employee employee : employeeRepository.findAll()) {
+                Position EmployeePosition = employee.getPosition();
+                if (Optional.ofNullable(EmployeePosition).isPresent()) {
+                    if (EmployeePosition.getId().equals(position)) {
+                        EmployeeDTOList.add(EmployeeDTO.fromEmployee(employee));
+                    }
+                }
+            }
+        } else {
+            employeeRepository.findAll().forEach(employee -> EmployeeDTOList.add(EmployeeDTO.fromEmployee(employee)));
+        }
+
+
+        return EmployeeDTOList;
+    }
+
+    @Override
+    public EmployeeFullInfo getEmployeeFullInfo(Integer id) {
+        return employeeRepository.getEmployeeFullInfo(id);
+    }
+
+    @Override
+    public List<EmployeeFullInfo> getEmployeePage(Integer page) {
+        List<EmployeeFullInfo> list1 = employeeRepository.getEmployeePage();
+        List<EmployeeFullInfo> list2 = new ArrayList<>();
+        list2.add(list1.get(1*page));
+        list2.add(list1.get(2*page));
+        list2.add(list1.get(3*page));
+        return list2;
     }
 }

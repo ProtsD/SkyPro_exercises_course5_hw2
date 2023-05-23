@@ -13,7 +13,6 @@ public class Handler {
     }
 
     @ExceptionHandler
-//    @ExceptionHandler(value = {IndexOutOfBoundsException.class, IOException.class})
     public ResponseEntity<?> handlerNumberFormatException(NumberFormatException numberFormatException) {
         return new ResponseEntity<>("Wrong number format", HttpStatus.BAD_REQUEST);
     }

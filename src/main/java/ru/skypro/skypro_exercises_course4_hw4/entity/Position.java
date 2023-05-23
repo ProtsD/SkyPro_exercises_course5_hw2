@@ -4,33 +4,26 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.ManyToAny;
 
 import java.util.Objects;
 
-
 @Entity
-@Table(name = "employee")
+@Table(name = "position")
 @Getter
 @Setter
 @ToString
-public class Employee {
+public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    private Integer salary;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "position_id")
-    private Position position;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
-        return Objects.equals(id, employee.id);
+        Position position = (Position) o;
+        return Objects.equals(id, position.id);
     }
 
     @Override
