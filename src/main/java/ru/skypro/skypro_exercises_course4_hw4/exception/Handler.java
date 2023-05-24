@@ -1,4 +1,4 @@
-package ru.skypro.skypro_exercises_course4_hw3.exception;
+package ru.skypro.skypro_exercises_course4_hw4.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,6 @@ public class Handler {
     }
 
     @ExceptionHandler
-//    @ExceptionHandler(value = {IndexOutOfBoundsException.class, IOException.class})
     public ResponseEntity<?> handlerNumberFormatException(NumberFormatException numberFormatException) {
         return new ResponseEntity<>("Wrong number format", HttpStatus.BAD_REQUEST);
     }
