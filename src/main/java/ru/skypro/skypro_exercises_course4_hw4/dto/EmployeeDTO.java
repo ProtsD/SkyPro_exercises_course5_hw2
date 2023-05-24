@@ -3,7 +3,6 @@ package ru.skypro.skypro_exercises_course4_hw4.dto;
 import lombok.Getter;
 import lombok.Setter;
 import ru.skypro.skypro_exercises_course4_hw4.entity.Employee;
-import ru.skypro.skypro_exercises_course4_hw4.entity.Position;
 
 import java.util.Optional;
 
