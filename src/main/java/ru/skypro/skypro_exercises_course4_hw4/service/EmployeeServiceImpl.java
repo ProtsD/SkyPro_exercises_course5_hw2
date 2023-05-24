@@ -1,6 +1,8 @@
 package ru.skypro.skypro_exercises_course4_hw4.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeDTO;
 import ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeFullInfo;
@@ -91,12 +93,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeFullInfo> getEmployeePage(Integer page) {
-        List<EmployeeFullInfo> list1 = employeeRepository.getEmployeePage();
+    public List<EmployeeDTO> getEmployeePage(PageRequest pageRequest) {
+/*        List<EmployeeFullInfo> list1 = employeeRepository.getEmployeePage();
         List<EmployeeFullInfo> list2 = new ArrayList<>();
         list2.add(list1.get(1*page));
         list2.add(list1.get(2*page));
-        list2.add(list1.get(3*page));
-        return list2;
+        list2.add(list1.get(3*page));*/
+        List<EmployeeDTO> employeesList = employeeRepository.findAll(pageRequest)
+                .stream()
+                .map(EmployeeDTO::fromEmployee)
+                .toList();
+        return employeesList;
     }
 }

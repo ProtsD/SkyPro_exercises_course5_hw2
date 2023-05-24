@@ -1,6 +1,7 @@
 package ru.skypro.skypro_exercises_course4_hw4.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeDTO;
 import ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeFullInfo;
@@ -49,6 +50,7 @@ public class EmployeeController {
     public List<EmployeeDTO> getEmployeesWithHighestSalary() {
         return employeeService.getEmployeesWithHighestSalary();
     }
+
     @GetMapping
     public List<EmployeeDTO> getEmployeesOnPosition(@RequestParam(value = "position", required = false) Integer position) {
         return employeeService.getEmployeesOnPosition(position);
@@ -60,8 +62,10 @@ public class EmployeeController {
     }
 
     @GetMapping("/page")
-    public List<EmployeeFullInfo> getEmployeePage(@RequestParam(value = "page", required = false) Integer page) {
-        return employeeService.getEmployeePage(page);
+    public List<EmployeeDTO> getEmployeePage(
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "size", required = false) Integer size) {
+        return employeeService.getEmployeePage(PageRequest.of(page, size));
     }
 }
 

@@ -1,5 +1,6 @@
 package ru.skypro.skypro_exercises_course4_hw4.service;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeDTO;
 import ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeFullInfo;
@@ -25,5 +26,5 @@ public interface EmployeeService {
     List<EmployeeDTO> getEmployeesOnPosition(Integer position);
 
     EmployeeFullInfo getEmployeeFullInfo(Integer id);
-    List<EmployeeFullInfo> getEmployeePage(Integer page);
+    List<EmployeeDTO> getEmployeePage(PageRequest pageRequest);
 }
