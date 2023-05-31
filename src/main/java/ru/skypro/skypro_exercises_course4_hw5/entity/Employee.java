@@ -1,4 +1,4 @@
-package ru.skypro.skypro_exercises_course4_hw4.entity;
+package ru.skypro.skypro_exercises_course4_hw5.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +13,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-public class Employee {
+public class Employee{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

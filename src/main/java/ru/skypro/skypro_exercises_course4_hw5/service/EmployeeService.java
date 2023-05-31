@@ -1,8 +1,8 @@
-package ru.skypro.skypro_exercises_course4_hw4.service;
+package ru.skypro.skypro_exercises_course4_hw5.service;
 
 import org.springframework.data.domain.PageRequest;
-import ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeDTO;
-import ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeFullInfo;
+import ru.skypro.skypro_exercises_course4_hw5.dto.EmployeeDTO;
+import ru.skypro.skypro_exercises_course4_hw5.dto.EmployeeFullInfo;
 
 import java.util.List;
 
