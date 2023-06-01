@@ -16,7 +16,8 @@ public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "json_text")
+    @Lob
+    @Column(name = "json_text", columnDefinition = "CLOB")
     private String text;
 
     public Report(String text) {

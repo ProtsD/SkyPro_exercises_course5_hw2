@@ -18,9 +18,4 @@ public class Handler {
     public ResponseEntity<?> handlerNumberFormatException(NumberFormatException numberFormatException) {
         return new ResponseEntity<>("Wrong number format", HttpStatus.BAD_REQUEST);
     }
-
-    @ExceptionHandler
-    public ResponseEntity<?> handlerNoSuchElementException(NoSuchElementException noSuchElementException) {
-        return new ResponseEntity<>("No such element", HttpStatus.BAD_REQUEST);
-    }
 }

@@ -4,12 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.skypro.skypro_exercises_course4_hw5.entity.Employee;
 
-import java.io.Serializable;
 import java.util.Optional;
 
 @Getter
 @Setter
-public class EmployeeDTO implements Serializable {
+public class EmployeeDTO {
     private Integer id;
     private String name;
     private Integer salary;
