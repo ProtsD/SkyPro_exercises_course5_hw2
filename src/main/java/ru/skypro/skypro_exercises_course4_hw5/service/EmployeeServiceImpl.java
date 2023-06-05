@@ -1,13 +1,13 @@
-package ru.skypro.skypro_exercises_course4_hw4.service;
+package ru.skypro.skypro_exercises_course4_hw5.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeDTO;
-import ru.skypro.skypro_exercises_course4_hw4.dto.EmployeeFullInfo;
-import ru.skypro.skypro_exercises_course4_hw4.entity.Employee;
-import ru.skypro.skypro_exercises_course4_hw4.entity.Position;
-import ru.skypro.skypro_exercises_course4_hw4.repository.EmployeeRepository;
+import ru.skypro.skypro_exercises_course4_hw5.dto.EmployeeDTO;
+import ru.skypro.skypro_exercises_course4_hw5.dto.EmployeeFullInfo;
+import ru.skypro.skypro_exercises_course4_hw5.entity.Employee;
+import ru.skypro.skypro_exercises_course4_hw5.entity.Position;
+import ru.skypro.skypro_exercises_course4_hw5.repository.EmployeeRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,9 +21,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void addEmployees(EmployeeDTO[] employeeDTO) {
-        employeeRepository.saveAll(Arrays.stream(employeeDTO)
-                .map(EmployeeDTO::toEmployee)
-                .toList());
+        employeeRepository.saveAll(Arrays.stream(employeeDTO).map(EmployeeDTO::toEmployee).toList());
     }
 
     @Override
@@ -54,16 +52,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeDTO> getEmployeeWithSalaryHigherThan(int salary) {
-        return employeeRepository.getSalaryHigherThan(salary).stream()
-                .map(EmployeeDTO::fromEmployee)
-                .toList();
+        return employeeRepository.getSalaryHigherThan(salary).stream().map(EmployeeDTO::fromEmployee).toList();
     }
 
     @Override
     public List<EmployeeDTO> getEmployeesWithHighestSalary() {
-        return employeeRepository.getEmployeesWithHighestSalary().stream()
-                .map(EmployeeDTO::fromEmployee)
-                .toList();
+        return employeeRepository.getEmployeesWithHighestSalary().stream().map(EmployeeDTO::fromEmployee).toList();
     }
 
     @Override
@@ -91,10 +85,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeDTO> getEmployeePage(PageRequest pageRequest) {
-        List<EmployeeDTO> employeesList = employeeRepository.findAll(pageRequest)
-                .stream()
-                .map(EmployeeDTO::fromEmployee)
-                .toList();
+        List<EmployeeDTO> employeesList = employeeRepository.findAll(pageRequest).stream().map(EmployeeDTO::fromEmployee).toList();
         return employeesList;
     }
 }
