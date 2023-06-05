@@ -18,4 +18,8 @@ public class Handler {
     public ResponseEntity<?> handlerNumberFormatException(NumberFormatException numberFormatException) {
         return new ResponseEntity<>("Wrong number format", HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler
+    public ResponseEntity<?> handlerReportNotFoundException(ReportNotFoundException reportNotFoundException) {
+        return new ResponseEntity<>("Report not found", HttpStatus.NOT_FOUND);
+    }
 }

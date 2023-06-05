@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GeneralReport {
+public class ReportDTO {
 
     private String position;
     private Long numberOfEmployees;

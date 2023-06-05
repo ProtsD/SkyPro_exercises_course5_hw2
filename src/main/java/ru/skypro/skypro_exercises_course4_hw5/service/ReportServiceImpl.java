@@ -1,25 +1,25 @@
 package ru.skypro.skypro_exercises_course4_hw5.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.skypro_exercises_course4_hw5.dto.EmployeeDTO;
 import ru.skypro.skypro_exercises_course4_hw5.entity.Report;
+import ru.skypro.skypro_exercises_course4_hw5.exception.ReportNotFoundException;
 import ru.skypro.skypro_exercises_course4_hw5.repository.EmployeeRepository;
 import ru.skypro.skypro_exercises_course4_hw5.repository.ReportRepository;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,13 +31,9 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public void putReport(MultipartFile file) {
-        try (InputStream inputStream = file.getInputStream()) {
-            int StreamSize = inputStream.available();
-            byte[] bytes = new byte[StreamSize];
-            inputStream.read(bytes);
-            String jsonText = new String(bytes, StandardCharsets.UTF_8);
 
-            List<EmployeeDTO> employeeDTO = Arrays.asList(objectMapper.readValue(jsonText, EmployeeDTO[].class));
+        try {
+            List<EmployeeDTO> employeeDTO = objectMapper.readValue(file.getBytes(), new TypeReference<>(){});
             employeeDTO.stream().map(EmployeeDTO::toEmployee).forEach(employeeRepository::save);
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,17 +54,12 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public ResponseEntity<Resource> getJson(int id) {
-        String fileName = "employee.json";
+    public Resource getJson(int id) {
         Optional<Report> file = reportRepository.findById(id);
         if (file.isPresent()) {
             String jsonText = reportRepository.findById(id).get().getText();
-            Resource resource = new ByteArrayResource(jsonText.getBytes());
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
-                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                    .body(resource);
+            return new ByteArrayResource(jsonText.getBytes());
         }
-        throw new NoSuchElementException();
+        throw new ReportNotFoundException();
     }
 }
