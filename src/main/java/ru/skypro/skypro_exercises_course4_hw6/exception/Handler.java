@@ -1,11 +1,9 @@
-package ru.skypro.skypro_exercises_course4_hw5.exception;
+package ru.skypro.skypro_exercises_course4_hw6.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class Handler {

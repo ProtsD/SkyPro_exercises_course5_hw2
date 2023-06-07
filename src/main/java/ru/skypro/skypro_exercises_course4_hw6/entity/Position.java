@@ -1,39 +1,29 @@
-package ru.skypro.skypro_exercises_course4_hw5.entity;
+package ru.skypro.skypro_exercises_course4_hw6.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Objects;
 
-
 @Entity
-@Table(name = "employee")
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "position")
 @Getter
 @Setter
 @ToString
-public class Employee{
+public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "salary")
-    private Integer salary;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "position_id")
-    private Position position;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
-        return Objects.equals(id, employee.id);
+        Position position = (Position) o;
+        return Objects.equals(id, position.id);
     }
 
     @Override

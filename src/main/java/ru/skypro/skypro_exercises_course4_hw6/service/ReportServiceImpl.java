@@ -1,4 +1,4 @@
-package ru.skypro.skypro_exercises_course4_hw5.service;
+package ru.skypro.skypro_exercises_course4_hw6.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -8,17 +8,14 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.skypro_exercises_course4_hw5.dto.EmployeeDTO;
-import ru.skypro.skypro_exercises_course4_hw5.entity.Report;
-import ru.skypro.skypro_exercises_course4_hw5.exception.ReportNotFoundException;
-import ru.skypro.skypro_exercises_course4_hw5.repository.EmployeeRepository;
-import ru.skypro.skypro_exercises_course4_hw5.repository.ReportRepository;
+import ru.skypro.skypro_exercises_course4_hw6.dto.EmployeeDTO;
+import ru.skypro.skypro_exercises_course4_hw6.entity.Report;
+import ru.skypro.skypro_exercises_course4_hw6.exception.ReportNotFoundException;
+import ru.skypro.skypro_exercises_course4_hw6.repository.EmployeeRepository;
+import ru.skypro.skypro_exercises_course4_hw6.repository.ReportRepository;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service

@@ -1,13 +1,13 @@
-package ru.skypro.skypro_exercises_course4_hw5.service;
+package ru.skypro.skypro_exercises_course4_hw6.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.skypro.skypro_exercises_course4_hw5.dto.EmployeeDTO;
-import ru.skypro.skypro_exercises_course4_hw5.dto.EmployeeFullInfo;
-import ru.skypro.skypro_exercises_course4_hw5.entity.Employee;
-import ru.skypro.skypro_exercises_course4_hw5.entity.Position;
-import ru.skypro.skypro_exercises_course4_hw5.repository.EmployeeRepository;
+import ru.skypro.skypro_exercises_course4_hw6.dto.EmployeeDTO;
+import ru.skypro.skypro_exercises_course4_hw6.dto.EmployeeFullInfo;
+import ru.skypro.skypro_exercises_course4_hw6.entity.Employee;
+import ru.skypro.skypro_exercises_course4_hw6.entity.Position;
+import ru.skypro.skypro_exercises_course4_hw6.repository.EmployeeRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;

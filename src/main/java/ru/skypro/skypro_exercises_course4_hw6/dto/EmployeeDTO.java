@@ -1,8 +1,8 @@
-package ru.skypro.skypro_exercises_course4_hw5.dto;
+package ru.skypro.skypro_exercises_course4_hw6.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.skypro.skypro_exercises_course4_hw5.entity.Employee;
+import ru.skypro.skypro_exercises_course4_hw6.entity.Employee;
 
 import java.util.Optional;
 

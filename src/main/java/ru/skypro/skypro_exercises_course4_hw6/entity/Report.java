@@ -1,4 +1,4 @@
-package ru.skypro.skypro_exercises_course4_hw5.entity;
+package ru.skypro.skypro_exercises_course4_hw6.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

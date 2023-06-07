@@ -1,4 +1,4 @@
-package ru.skypro.skypro_exercises_course4_hw5.dto;
+package ru.skypro.skypro_exercises_course4_hw6.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

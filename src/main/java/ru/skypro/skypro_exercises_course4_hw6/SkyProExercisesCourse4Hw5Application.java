@@ -1,4 +1,4 @@
-package ru.skypro.skypro_exercises_course4_hw5;
+package ru.skypro.skypro_exercises_course4_hw6;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
