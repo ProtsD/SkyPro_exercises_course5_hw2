@@ -2,12 +2,14 @@ package ru.skypro.skypro_exercises_course4_hw7.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import ru.skypro.skypro_exercises_course4_hw7.entity.Employee;
 
 import java.util.Optional;
 
 @Getter
 @Setter
+@ToString
 public class EmployeeDTO {
     private Integer id;
     private String name;
