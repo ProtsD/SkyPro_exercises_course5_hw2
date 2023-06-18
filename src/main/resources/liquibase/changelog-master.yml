@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: liquibase/сhangesets/230618_create_position.yml
+  - include:
+      file: liquibase/сhangesets/230618_create_employee.yml
+  - include:
+      file: liquibase/сhangesets/230618_create_user.yml
