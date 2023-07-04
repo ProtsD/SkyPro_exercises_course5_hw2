@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import java.util.Objects;
 
@@ -12,6 +13,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@Accessors(chain = true)
 public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -2,6 +2,7 @@ package ru.skypro.skypro_exercises_course5_hw1.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.Objects;
 
@@ -13,6 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@Accessors(chain = true)
 public class Employee{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,6 @@
 package ru.skypro.skypro_exercises_course5_hw1.dto;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,6 +11,7 @@ import java.util.Optional;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode
 public class EmployeeDTO {
     private Integer id;
     private String name;
