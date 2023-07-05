@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
 import ru.skypro.skypro_exercises_course5_hw1.dto.EmployeeDTO;
 import ru.skypro.skypro_exercises_course5_hw1.dto.EmployeeFullInfo;
 import ru.skypro.skypro_exercises_course5_hw1.entity.Employee;
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class EmployeeServiceImplTest {
     @Mock
-    private EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepositoryMock;
     @InjectMocks
     private EmployeeServiceImpl employeeService;
 
@@ -32,7 +33,7 @@ class EmployeeServiceImplTest {
     @MethodSource("addEmployees_ProvideParamsForTests")
     void addEmployees_ArraysOfEmployee_NoReturn(EmployeeDTO[] employeeDTO) {
         employeeService.addEmployees(employeeDTO);
-        verify(employeeRepository, times(1)).saveAll(any());
+        verify(employeeRepositoryMock, times(1)).saveAll(any());
     }
 
     public static Stream<Arguments> addEmployees_ProvideParamsForTests() {
@@ -76,13 +77,13 @@ class EmployeeServiceImplTest {
                         .setPosition(new Position().setId(2).setName("Programmer1"))
         );
         employeeService.addEmployee(employee);
-        verify(employeeRepository, times(1)).save(any());
+        verify(employeeRepositoryMock, times(1)).save(any());
     }
 
     @Test
     void putEmployee_IdAndEmployeeDTO_NoReturn() {
 
-        when(employeeRepository.existsById(anyInt()))
+        when(employeeRepositoryMock.existsById(anyInt()))
                 .thenReturn(true);
 
         Integer inputInteger = 1;
@@ -94,7 +95,7 @@ class EmployeeServiceImplTest {
                         .setPosition(new Position().setId(2).setName("Programmer1"))
         );
         employeeService.putEmployee(inputInteger, inputEmployee);
-        verify(employeeRepository, times(1)).save(any());
+        verify(employeeRepositoryMock, times(1)).save(any());
     }
 
     @Test
@@ -114,20 +115,20 @@ class EmployeeServiceImplTest {
                         .setSalary(400)
                         .setPosition(new Position().setId(2).setName("Programmer1"))
                 );
-        when(employeeRepository.findById(input))
+        when(employeeRepositoryMock.findById(input))
                 .thenReturn(expectedEntity);
 
 
         EmployeeDTO actual = employeeService.getEmployee(input);
         assertEquals(expectedDTO, actual);
-        verify(employeeRepository, times(2)).findById(any());
+        verify(employeeRepositoryMock, times(2)).findById(any());
     }
 
     @Test
     void delEmployee_ById_NoReturn() {
         Integer input = 1;
         employeeService.delEmployee(input);
-        verify(employeeRepository, times(1)).deleteById(any());
+        verify(employeeRepositoryMock, times(1)).deleteById(any());
     }
 
     @Test
@@ -158,12 +159,12 @@ class EmployeeServiceImplTest {
                         .setPosition(new Position().setId(2).setName("Programmer2"))
         );
         Integer input = 2;
-        when(employeeRepository.getEmployeesWithHighestSalary())
+        when(employeeRepositoryMock.getEmployeesWithHighestSalary())
                 .thenReturn(expectedRepositoryOut);
 
         List<EmployeeDTO> actual = employeeService.getEmployeesWithHighestSalary();
         assertEquals(expected, actual);
-        verify(employeeRepository, times(1)).getEmployeesWithHighestSalary();
+        verify(employeeRepositoryMock, times(1)).getEmployeesWithHighestSalary();
     }
 
     @Test
@@ -199,12 +200,12 @@ class EmployeeServiceImplTest {
                         .setPosition(new Position().setId(3).setName("Programmer3"))
         );
         Integer input = 2;
-        when(employeeRepository.findAll())
+        when(employeeRepositoryMock.findAll())
                 .thenReturn(expectedRepositoryOut);
 
         List<EmployeeDTO> actual = employeeService.getEmployeesOnPosition(input);
         assertEquals(expectedMethodOut, actual);
-        verify(employeeRepository, times(1)).findAll();
+        verify(employeeRepositoryMock, times(1)).findAll();
     }
 
     @Test
@@ -215,54 +216,49 @@ class EmployeeServiceImplTest {
                 .setSalary(410000)
                 .setPositionName("Developer1");
 
-        when(employeeRepository.getEmployeeFullInfo(input))
+        when(employeeRepositoryMock.getEmployeeFullInfo(input))
                 .thenReturn(expected);
 
         EmployeeFullInfo actual = employeeService.getEmployeeFullInfo(input);
         assertEquals(expected, actual);
-        verify(employeeRepository, times(1)).getEmployeeFullInfo(any());
+        verify(employeeRepositoryMock, times(1)).getEmployeeFullInfo(any());
     }
 
-    /*@Test
+    @Test
     void getEmployeePage_ValidPosition_ShouldReturnEmployeeFullInfo() {
         int page = 0;
         int size = 2;
         PageRequest input = PageRequest.of(page, size);
         List<EmployeeDTO> expected = List.of(
                 EmployeeDTO.fromEmployee(new Employee()
-                        .setId(123)
+                        .setId(12)
                         .setName("Denis1")
                         .setSalary(400)
-                        .setPosition(new Position().setId(2).setName("Programmer1"))),
+                        .setPosition(new Position().setId(1).setName("Programmer1"))),
                 EmployeeDTO.fromEmployee(new Employee()
-                        .setId(124)
+                        .setId(123)
                         .setName("Denis2")
-                        .setSalary(400)
+                        .setSalary(500)
                         .setPosition(new Position().setId(2).setName("Programmer2")))
         );
         List<Employee> expectedRepositoryOut = List.of(
                 new Employee()
-                        .setId(123)
+                        .setId(12)
                         .setName("Denis1")
                         .setSalary(400)
-                        .setPosition(new Position().setId(2).setName("Programmer1")),
+                        .setPosition(new Position().setId(1).setName("Programmer1")),
                 new Employee()
-                        .setId(124)
+                        .setId(123)
                         .setName("Denis2")
-                        .setSalary(400)
-                        .setPosition(new Position().setId(2).setName("Programmer2")),
-                new Employee()
-                        .setId(125)
-                        .setName("Denis3")
-                        .setSalary(400)
-                        .setPosition(new Position().setId(2).setName("Programmer1"))
+                        .setSalary(500)
+                        .setPosition(new Position().setId(2).setName("Programmer2"))
         );
-
-        when(employeeRepository.findAll())
-                .thenReturn(expectedRepositoryOut);
+        Page<Employee> pageContent = new PageImpl<>(expectedRepositoryOut);
+        when(employeeRepositoryMock.findAll(input))
+                .thenReturn(pageContent);
 
         List<EmployeeDTO> actual = employeeService.getEmployeePage(input);
         assertEquals(expected, actual);
-        verify(employeeRepository, times(1)).findAll();
-    }*/
+        verify(employeeRepositoryMock, times(1)).findAll(input);
+    }
 }
