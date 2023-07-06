@@ -2,9 +2,11 @@ package ru.skypro.skypro_exercises_course5_hw1.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 @Data
 @NoArgsConstructor
+@Accessors(chain = true)
 public class EmployeeFullInfo {
     private String name;
     private Integer salary;

@@ -112,7 +112,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeDTO> getEmployeePage(PageRequest pageRequest) {
         logger.info("Invoke getEmployeePage() with argument: pageRequest={}", pageRequest);
-        List<EmployeeDTO> employeesList = employeeRepository.findAll(pageRequest).stream().map(EmployeeDTO::fromEmployee).toList();
+        List<EmployeeDTO> employeesList = employeeRepository
+                .findAll(pageRequest)
+                .stream()
+                .map(EmployeeDTO::fromEmployee)
+                .toList();
         logger.debug("getEmployeePage() is processed ok");
         return employeesList;
     }
