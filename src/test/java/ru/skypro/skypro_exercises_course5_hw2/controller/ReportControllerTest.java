@@ -70,6 +70,7 @@ class ReportControllerTest {
     void putGeneralReportAndGetJson() throws Exception {
         int arrayElement1 = 5;
         int arrayElement2 = 4;
+
         String jsonString = returnJsonEmployeeDTOList(arrayElement1, arrayElement2);
         MockMultipartFile multipartFile = new MockMultipartFile(
                 "file",
