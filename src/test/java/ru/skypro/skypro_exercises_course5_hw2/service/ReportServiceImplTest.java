@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.skypro_exercises_course5_hw2.dto.EmployeeDTO;
+import ru.skypro.skypro_exercises_course5_hw2.dto.EmployeeMapper;
 import ru.skypro.skypro_exercises_course5_hw2.entity.Employee;
 import ru.skypro.skypro_exercises_course5_hw2.entity.Position;
 import ru.skypro.skypro_exercises_course5_hw2.entity.Report;
@@ -42,12 +43,12 @@ class ReportServiceImplTest {
         when(file.getBytes()).thenReturn(new byte[10]);
 
         List<EmployeeDTO> expected = List.of(
-                EmployeeDTO.fromEmployee(new Employee()
+                EmployeeMapper.fromEmployee(new Employee()
                         .setId(123)
                         .setName("Denis1")
                         .setSalary(400)
                         .setPosition(new Position().setId(2).setName("Programmer1"))),
-                EmployeeDTO.fromEmployee(new Employee()
+                EmployeeMapper.fromEmployee(new Employee()
                         .setId(124)
                         .setName("Denis2")
                         .setSalary(400)

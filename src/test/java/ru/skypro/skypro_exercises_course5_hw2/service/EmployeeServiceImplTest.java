@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
 import ru.skypro.skypro_exercises_course5_hw2.dto.EmployeeDTO;
 import ru.skypro.skypro_exercises_course5_hw2.dto.EmployeeFullInfo;
+import ru.skypro.skypro_exercises_course5_hw2.dto.EmployeeMapper;
 import ru.skypro.skypro_exercises_course5_hw2.entity.Employee;
 import ru.skypro.skypro_exercises_course5_hw2.entity.Position;
 import ru.skypro.skypro_exercises_course5_hw2.repository.EmployeeRepository;
@@ -41,13 +42,13 @@ class EmployeeServiceImplTest {
 
                 Arguments.of(
                         (Object) new EmployeeDTO[]{
-                                EmployeeDTO.fromEmployee(
+                                EmployeeMapper.fromEmployee(
                                         new Employee()
                                                 .setId(123)
                                                 .setName("Denis")
                                                 .setSalary(400)
                                                 .setPosition(new Position().setId(1).setName("Programmer1"))),
-                                EmployeeDTO.fromEmployee(
+                                EmployeeMapper.fromEmployee(
                                         new Employee()
                                                 .setId(123)
                                                 .setName("Denis2")
@@ -56,7 +57,7 @@ class EmployeeServiceImplTest {
                         }),
                 Arguments.of(
                         (Object) new EmployeeDTO[]{
-                                EmployeeDTO.fromEmployee(
+                                EmployeeMapper.fromEmployee(
                                         new Employee()
                                                 .setId(123)
                                                 .setName("Denis")
@@ -69,7 +70,7 @@ class EmployeeServiceImplTest {
 
     @Test
     void addEmployee_EmployeeDTO_NoReturn() {
-        EmployeeDTO employee = EmployeeDTO.fromEmployee(
+        EmployeeDTO employee = EmployeeMapper.fromEmployee(
                 new Employee()
                         .setId(123)
                         .setName("Denis")
@@ -87,7 +88,7 @@ class EmployeeServiceImplTest {
                 .thenReturn(true);
 
         Integer inputInteger = 1;
-        EmployeeDTO inputEmployee = EmployeeDTO.fromEmployee(
+        EmployeeDTO inputEmployee = EmployeeMapper.fromEmployee(
                 new Employee()
                         .setId(123)
                         .setName("Denis")
@@ -102,7 +103,7 @@ class EmployeeServiceImplTest {
     void getEmployee_EmployeeId_ShouldReturnEmployeeDTO() {
         Integer input = 2;
         EmployeeDTO expectedDTO =
-                EmployeeDTO.fromEmployee(new Employee()
+                EmployeeMapper.fromEmployee(new Employee()
                         .setId(123)
                         .setName("Denis1")
                         .setSalary(400)
@@ -134,12 +135,12 @@ class EmployeeServiceImplTest {
     @Test
     void getEmployeesWithHighestSalary_ValidPosition_ShouldReturnEmployeeDTOList() {
         List<EmployeeDTO> expected = List.of(
-                EmployeeDTO.fromEmployee(new Employee()
+                EmployeeMapper.fromEmployee(new Employee()
                         .setId(123)
                         .setName("Denis1")
                         .setSalary(402)
                         .setPosition(new Position().setId(2).setName("Programmer1"))),
-                EmployeeDTO.fromEmployee(new Employee()
+                EmployeeMapper.fromEmployee(new Employee()
                         .setId(123)
                         .setName("Denis2")
                         .setSalary(402)
@@ -170,12 +171,12 @@ class EmployeeServiceImplTest {
     @Test
     void getEmployeesOnPosition_ValidPosition_ShouldReturnEmployeeDTOList() {
         List<EmployeeDTO> expectedMethodOut = List.of(
-                EmployeeDTO.fromEmployee(new Employee()
+                EmployeeMapper.fromEmployee(new Employee()
                         .setId(123)
                         .setName("Denis1")
                         .setSalary(400)
                         .setPosition(new Position().setId(2).setName("Programmer1"))),
-                EmployeeDTO.fromEmployee(new Employee()
+                EmployeeMapper.fromEmployee(new Employee()
                         .setId(123)
                         .setName("Denis2")
                         .setSalary(400)
@@ -199,7 +200,7 @@ class EmployeeServiceImplTest {
                         .setSalary(401)
                         .setPosition(new Position().setId(3).setName("Programmer3"))
         );
-        Integer input = 2;
+        String input = "ftg";
         when(employeeRepositoryMock.findAll())
                 .thenReturn(expectedRepositoryOut);
 
@@ -230,12 +231,12 @@ class EmployeeServiceImplTest {
         int size = 2;
         PageRequest input = PageRequest.of(page, size);
         List<EmployeeDTO> expected = List.of(
-                EmployeeDTO.fromEmployee(new Employee()
+                EmployeeMapper.fromEmployee(new Employee()
                         .setId(12)
                         .setName("Denis1")
                         .setSalary(400)
                         .setPosition(new Position().setId(1).setName("Programmer1"))),
-                EmployeeDTO.fromEmployee(new Employee()
+                EmployeeMapper.fromEmployee(new Employee()
                         .setId(123)
                         .setName("Denis2")
                         .setSalary(500)

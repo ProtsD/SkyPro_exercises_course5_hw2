@@ -2,7 +2,6 @@ package ru.skypro.skypro_exercises_course5_hw2.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONObject;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.skypro.skypro_exercises_course5_hw2.entity.Position;
 import ru.skypro.skypro_exercises_course5_hw2.repository.EmployeeRepository;
 import ru.skypro.skypro_exercises_course5_hw2.repository.PositionRepository;
 import ru.skypro.skypro_exercises_course5_hw2.service.EmployeeService;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static Constants.EmployeeConstants.*;
+import static AuxiliaryData.EmployeeAuxiliaryData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -55,6 +50,7 @@ class EmployeeControllerTest {
     void cleanEmployeeTable() {
         employeeRepository.deleteAll();
     }
+
     private static final String EMPLOYEES_URL = "/employees";
 
 
@@ -174,49 +170,26 @@ class EmployeeControllerTest {
 
     @Test
     void getEmployeesOnPosition_IfOneTwoOrNoneRecordsExist() throws Exception {
-        int employeeId = 50;
+        int employeeId = 1;
 
-        List<Position> list = new ArrayList<>();
-        for (int i = 0; i < 60; i++) {
-            list.add(new Position(i,Integer.toString(i)));
-        }
-        positionRepository.saveAll(list);
 
-        String jsonString = returnJsonEmployeeDTOList(employeeId, employeeId - 1);
+        String jsonString = returnJsonEmployeeDTOList(employeeId, employeeId, employeeId + 1);
         mockMvc.perform(post(EMPLOYEES_URL + "/list")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonString))
                 .andExpect(status().isOk());
 
 
-        Integer position = employeeId;
-        returnEmployeeListFromDB(employeeRepository).forEach(System.out::println);
-        System.out.println(position);
-//        Integer position = returnEmployeeListFromDB(employeeRepository).stream().findFirst().orElseThrow().getPosition().getId();
-        mockMvc.perform(get(EMPLOYEES_URL + "/{position}", position))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1));
-
-
-        mockMvc.perform(post(EMPLOYEES_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(returnJsonEmployeeDTO(employeeId).toString()))
-                .andExpect(status().isOk());
-
-
-
-//        returnEmployeeListFromDB(employeeRepository).forEach(e -> e.setPosition(new Position(poos,Integer.toString(poos))));
-//       returnEmployeeListFromDB(employeeRepository).forEach(System.out::println);
-//        position = returnEmployeeListFromDB(employeeRepository).stream().findFirst().orElseThrow().getId();
-        mockMvc.perform(get(EMPLOYEES_URL + "/{position}", position))
+        String position = Integer.toString(employeeId);
+        mockMvc.perform(get(EMPLOYEES_URL + "?position={position}", position))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2));
 
 
-//        position += 1;
-//        mockMvc.perform(get(EMPLOYEES_URL + "/{position}", position))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$").isEmpty());
+        position = Integer.toString(employeeId + 1);
+        mockMvc.perform(get(EMPLOYEES_URL + "?position={position}", position))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
     }
 
     @Test
@@ -228,10 +201,12 @@ class EmployeeControllerTest {
                 .andExpect(status().isOk());
         returnEmployeeListFromDB(employeeRepository).forEach(System.out::println);
 
+
+        String name = returnEmployeeListFromDB(employeeRepository).stream().findFirst().orElseThrow().getName();
         employeeId = returnEmployeeListFromDB(employeeRepository).stream().findFirst().orElseThrow().getId();
-        mockMvc.perform(get(EMPLOYEES_URL + "/{id}/fullInfo", employeeId))
+        mockMvc.perform(get(EMPLOYEES_URL + "/{employeeId}/fullInfo", employeeId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(employeeId));
+                .andExpect(jsonPath("$.name").value(name));
     }
 
     @Test
@@ -239,7 +214,7 @@ class EmployeeControllerTest {
         Integer page0 = 0;
         Integer page1 = 1;
         Integer size = 3;
-        String jsonString = returnJsonEmployeeDTOList(21,22,23,24,25);
+        String jsonString = returnJsonEmployeeDTOList(21, 22, 23, 24, 25);
         mockMvc.perform(post(EMPLOYEES_URL + "/list")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonString))

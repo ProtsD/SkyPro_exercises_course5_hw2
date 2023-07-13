@@ -1,5 +1,6 @@
 package ru.skypro.skypro_exercises_course5_hw2.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -10,7 +11,8 @@ import ru.skypro.skypro_exercises_course5_hw2.entity.Employee;
 
 import java.util.List;
 
-public interface EmployeeRepository extends CrudRepository<Employee, Integer>, PagingAndSortingRepository<Employee, Integer> {
+public interface EmployeeRepository extends JpaRepository<Employee, Integer>, PagingAndSortingRepository<Employee, Integer> {
+//public interface EmployeeRepository extends CrudRepository<Employee, Integer>, PagingAndSortingRepository<Employee, Integer> {
 
     @Query(value = "SELECT * FROM employee WHERE salary > :salary", nativeQuery = true)
     List<Employee> getSalaryHigherThan(@Param("salary") int input);
@@ -33,4 +35,7 @@ public interface EmployeeRepository extends CrudRepository<Employee, Integer>, P
             "WHERE e.position = p " +
             "GROUP BY p.name")
     List<ReportDTO> putGeneralReport();
+
+    @Query(value = "SELECT * FROM employee WHERE position_id = :positionId", nativeQuery = true)
+    List<Employee> getEmployeesOnPosition(@Param("positionId") Integer positionId);
 }

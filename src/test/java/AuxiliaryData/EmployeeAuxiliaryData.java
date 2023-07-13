@@ -1,4 +1,4 @@
-package Constants;
+package AuxiliaryData;
 
 import net.minidev.json.JSONObject;
 import org.json.JSONArray;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class EmployeeConstants {
+public class EmployeeAuxiliaryData {
     public static JSONObject returnJsonEmployeeDTO(int number) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", number);

@@ -11,6 +11,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.skypro_exercises_course5_hw2.dto.EmployeeDTO;
+import ru.skypro.skypro_exercises_course5_hw2.dto.EmployeeMapper;
 import ru.skypro.skypro_exercises_course5_hw2.entity.Report;
 import ru.skypro.skypro_exercises_course5_hw2.exception.ReportNotFoundException;
 import ru.skypro.skypro_exercises_course5_hw2.repository.EmployeeRepository;
@@ -33,7 +34,7 @@ public class ReportServiceImpl implements ReportService {
         logger.info("Invoke putReport() with argument: file");
         try {
             List<EmployeeDTO> employeeDTO = objectMapper.readValue(file.getBytes(), new TypeReference<>(){});
-            employeeDTO.stream().map(EmployeeDTO::toEmployee).forEach(employeeRepository::save);
+            employeeDTO.stream().map(EmployeeMapper::toEmployee).forEach(employeeRepository::save);
             logger.debug("putReport() is processed ok");
         } catch (IOException e) {
             logger.error("Invoke putReport() with argument: file. There is an exception.");

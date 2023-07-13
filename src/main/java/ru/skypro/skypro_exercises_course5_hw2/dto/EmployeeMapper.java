@@ -1,19 +1,18 @@
 package ru.skypro.skypro_exercises_course5_hw2.dto;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.skypro.skypro_exercises_course5_hw2.entity.Employee;
 import ru.skypro.skypro_exercises_course5_hw2.entity.Position;
+import ru.skypro.skypro_exercises_course5_hw2.repository.EmployeeRepository;
 
 import java.util.Optional;
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@RequiredArgsConstructor
 public class EmployeeMapper {
+    @Autowired
+    private final EmployeeRepository employeeRepository;
+
     public static EmployeeDTO fromEmployee(Employee employee) {
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setId(employee.getId());
@@ -27,12 +26,21 @@ public class EmployeeMapper {
         return employeeDTO;
     }
 
-    public Employee toEmployee(EmployeeDTO employeeDTO) {
+    public static Employee toEmployee(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         employee.setId(employeeDTO.getId());
         employee.setName(employeeDTO.getName());
         employee.setSalary(employeeDTO.getSalary());
         employee.setPosition(new Position().setName(employeeDTO.getPosition()));
+        return employee;
+    }
+
+    public static Employee toEmployee(EmployeeDTO employeeDTO, Position position) {
+        Employee employee = new Employee();
+        employee.setId(employeeDTO.getId());
+        employee.setName(employeeDTO.getName());
+        employee.setSalary(employeeDTO.getSalary());
+        employee.setPosition(position != null ? position : new Position().setName(employeeDTO.getPosition()));
         return employee;
     }
 }

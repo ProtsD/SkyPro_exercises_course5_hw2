@@ -22,7 +22,7 @@ public interface EmployeeService {
 
     List<EmployeeDTO> getEmployeesWithHighestSalary();
 
-    List<EmployeeDTO> getEmployeesOnPosition(Integer position);
+    List<EmployeeDTO> getEmployeesOnPosition(String position);
 
     EmployeeFullInfo getEmployeeFullInfo(Integer id);
 

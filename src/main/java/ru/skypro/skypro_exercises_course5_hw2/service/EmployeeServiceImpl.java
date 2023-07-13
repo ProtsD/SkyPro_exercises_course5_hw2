@@ -7,32 +7,39 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.skypro.skypro_exercises_course5_hw2.dto.EmployeeDTO;
 import ru.skypro.skypro_exercises_course5_hw2.dto.EmployeeFullInfo;
-import ru.skypro.skypro_exercises_course5_hw2.entity.Employee;
+import ru.skypro.skypro_exercises_course5_hw2.dto.EmployeeMapper;
 import ru.skypro.skypro_exercises_course5_hw2.entity.Position;
 import ru.skypro.skypro_exercises_course5_hw2.repository.EmployeeRepository;
+import ru.skypro.skypro_exercises_course5_hw2.repository.PositionRepository;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
+    private final PositionRepository positionRepository;
     Logger logger = LoggerFactory.getLogger(ReportServiceImpl.class);
 
     @Override
     public void addEmployees(EmployeeDTO[] employeeDTO) {
         logger.info("Invoke addEmployees() with argument: employeeDTO={}", Arrays.stream(employeeDTO).toList());
-        employeeRepository.saveAll(Arrays.stream(employeeDTO).map(EmployeeDTO::toEmployee).toList());
+        employeeRepository.saveAll(Arrays.stream(employeeDTO)
+                .map(e -> {
+                    Position position = positionRepository.getPositionByName(e.getPosition());
+                    return EmployeeMapper.toEmployee(e, position);
+                })
+                .toList());
         logger.debug("addEmployees() is processed ok");
     }
 
     @Override
     public void addEmployee(EmployeeDTO employeeDTO) {
         logger.info("Invoke addEmployee() with argument: employeeDTO={}", employeeDTO);
-        employeeRepository.save(employeeDTO.toEmployee());
+        Position position = positionRepository.getPositionByName(employeeDTO.getPosition());
+        System.out.println("hjijkpjoiiokokokokokokok" + position);
+        employeeRepository.save(EmployeeMapper.toEmployee(employeeDTO, position));
         logger.debug("addEmployee() is processed ok");
     }
 
@@ -41,7 +48,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         logger.info("Invoke putEmployee() with argument: id={}, employeeDTO={}", id, employeeDTO);
         if (employeeRepository.existsById(id)) {
             employeeDTO.setId(id);
-            employeeRepository.save(employeeDTO.toEmployee());
+            Position position = positionRepository.getPositionByName(employeeDTO.getPosition());
+            employeeRepository.save(EmployeeMapper.toEmployee(employeeDTO, position));
             logger.debug("putEmployee() is processed ok");
         }
     }
@@ -50,7 +58,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDTO getEmployee(Integer id) {
         logger.info("Invoke getEmployee() with argument: id={}", id);
         if (employeeRepository.findById(id).isPresent()) {
-            EmployeeDTO employeeDTO = EmployeeDTO.fromEmployee(employeeRepository.findById(id).get());
+            EmployeeDTO employeeDTO = EmployeeMapper.fromEmployee(employeeRepository.findById(id).get());
             logger.debug("putEmployee() is processed ok");
             return employeeDTO;
         }
@@ -68,7 +76,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeDTO> getEmployeeWithSalaryHigherThan(int salary) {
         logger.info("Invoke getEmployeeWithSalaryHigherThan() with argument: salary={}", salary);
-        List<EmployeeDTO> listEmployeeDTO = employeeRepository.getSalaryHigherThan(salary).stream().map(EmployeeDTO::fromEmployee).toList();
+        List<EmployeeDTO> listEmployeeDTO = employeeRepository.getSalaryHigherThan(salary).stream().map(EmployeeMapper::fromEmployee).toList();
         logger.debug("getEmployeeWithSalaryHigherThan() is processed ok");
         return listEmployeeDTO;
     }
@@ -76,30 +84,34 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeDTO> getEmployeesWithHighestSalary() {
         logger.info("Invoke getEmployeesWithHighestSalary() w/o arguments");
-        List<EmployeeDTO> listEmployeeDTO = employeeRepository.getEmployeesWithHighestSalary().stream().map(EmployeeDTO::fromEmployee).toList();
+        List<EmployeeDTO> listEmployeeDTO = employeeRepository.getEmployeesWithHighestSalary().stream().map(EmployeeMapper::fromEmployee).toList();
         logger.debug("getEmployeesWithHighestSalary() is processed ok");
         return listEmployeeDTO;
     }
 
     @Override
-    public List<EmployeeDTO> getEmployeesOnPosition(Integer position) {
-        logger.info("Invoke getEmployeesOnPosition() with argument: position={}", position);
-        List<EmployeeDTO> EmployeeDTOList = new ArrayList<>();
-        if (Optional.ofNullable(position).isPresent()) {
-            for (Employee employee : employeeRepository.findAll()) {
-                Position EmployeePosition = employee.getPosition();
-                if (Optional.ofNullable(EmployeePosition).isPresent()) {
-                    if (EmployeePosition.getId().equals(position)) {
-                        EmployeeDTOList.add(EmployeeDTO.fromEmployee(employee));
-                        logger.debug("getEmployeesOnPosition() is processed ok");
-                    }
-                }
-            }
+    public List<EmployeeDTO> getEmployeesOnPosition(String positionName) {
+        logger.info("Invoke getEmployeesOnPosition() with argument: position={}", positionName);
+        List<EmployeeDTO> EmployeeDTOList;
+        Position position = positionRepository.getPositionByName(positionName);
+        System.out.println(position);
+        if (positionName == null || positionName.isBlank() || position == null) {
+            EmployeeDTOList = employeeRepository.findAll().stream()
+                    .map(EmployeeMapper::fromEmployee)
+                    .toList();
         } else {
-            employeeRepository.findAll().forEach(employee -> EmployeeDTOList.add(EmployeeDTO.fromEmployee(employee)));
+            System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
+            employeeRepository.getEmployeesOnPosition(position.getId()).stream()
+                    .map(EmployeeMapper::fromEmployee)
+                    .forEach(System.out::println);
+            EmployeeDTOList = employeeRepository.getEmployeesOnPosition(position.getId()).stream()
+                    .map(EmployeeMapper::fromEmployee)
+                    .toList();
         }
+        logger.debug("getEmployeesOnPosition() is processed ok");
         return EmployeeDTOList;
     }
+
 
     @Override
     public EmployeeFullInfo getEmployeeFullInfo(Integer id) {
@@ -115,7 +127,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<EmployeeDTO> employeesList = employeeRepository
                 .findAll(pageRequest)
                 .stream()
-                .map(EmployeeDTO::fromEmployee)
+                .map(EmployeeMapper::fromEmployee)
                 .toList();
         logger.debug("getEmployeePage() is processed ok");
         return employeesList;
