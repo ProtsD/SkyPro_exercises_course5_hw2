@@ -1,5 +1,6 @@
 package ru.skypro.skypro_exercises_course5_hw2.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,14 +11,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.skypro.skypro_exercises_course5_hw2.dto.EmployeeDTO;
+import ru.skypro.skypro_exercises_course5_hw2.dto.EmployeeMapper;
 import ru.skypro.skypro_exercises_course5_hw2.repository.EmployeeRepository;
 import ru.skypro.skypro_exercises_course5_hw2.repository.PositionRepository;
 import ru.skypro.skypro_exercises_course5_hw2.service.EmployeeService;
 
 import java.lang.reflect.Array;
+import java.util.List;
 import java.util.Set;
 
 import static AuxiliaryData.EmployeeAuxiliaryData.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -81,8 +86,11 @@ class EmployeeControllerTest {
                 .andExpect(status().isOk());
 
 
-        assertEquals(Integer.toString(arrayElement1), employeeRepository.findById(arrayElement1).orElseThrow().getName());
-        assertEquals(Integer.toString(arrayElement2), employeeRepository.findById(arrayElement2).orElseThrow().getName());
+        List<EmployeeDTO> actual = returnEmployeeListFromDB(employeeRepository).stream().map(EmployeeMapper::fromEmployee).toList();
+        assertThat(actual)
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+                .containsExactlyElementsOf(objectMapper.readValue(jsonString, new TypeReference<List<EmployeeDTO>>() {
+                }));
     }
 
     @Test
