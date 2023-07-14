@@ -8,13 +8,17 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.*;
+import org.objectweb.asm.TypeReference;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import ru.skypro.skypro_exercises_course5_hw2.dto.EmployeeDTO;
 import ru.skypro.skypro_exercises_course5_hw2.dto.EmployeeFullInfo;
 import ru.skypro.skypro_exercises_course5_hw2.dto.EmployeeMapper;
 import ru.skypro.skypro_exercises_course5_hw2.entity.Employee;
 import ru.skypro.skypro_exercises_course5_hw2.entity.Position;
 import ru.skypro.skypro_exercises_course5_hw2.repository.EmployeeRepository;
+import ru.skypro.skypro_exercises_course5_hw2.repository.PositionRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +31,8 @@ import static org.mockito.Mockito.*;
 class EmployeeServiceImplTest {
     @Mock
     private EmployeeRepository employeeRepositoryMock;
+    @Mock
+    private PositionRepository positionRepositoryMock;
     @InjectMocks
     private EmployeeServiceImpl employeeService;
 
@@ -86,6 +92,8 @@ class EmployeeServiceImplTest {
 
         when(employeeRepositoryMock.existsById(anyInt()))
                 .thenReturn(true);
+        when(positionRepositoryMock.getPositionByName(any(String.class)))
+                .thenReturn(new Position().setId(2).setName("Programmer1"));
 
         Integer inputInteger = 1;
         EmployeeDTO inputEmployee = EmployeeMapper.fromEmployee(
@@ -175,7 +183,7 @@ class EmployeeServiceImplTest {
                         .setId(123)
                         .setName("Denis1")
                         .setSalary(400)
-                        .setPosition(new Position().setId(2).setName("Programmer1"))),
+                        .setPosition(new Position().setId(2).setName("Programmer2"))),
                 EmployeeMapper.fromEmployee(new Employee()
                         .setId(123)
                         .setName("Denis2")
@@ -188,7 +196,7 @@ class EmployeeServiceImplTest {
                         .setId(123)
                         .setName("Denis1")
                         .setSalary(400)
-                        .setPosition(new Position().setId(2).setName("Programmer1")),
+                        .setPosition(new Position().setId(2).setName("Programmer2")),
                 new Employee()
                         .setId(123)
                         .setName("Denis2")
@@ -200,13 +208,18 @@ class EmployeeServiceImplTest {
                         .setSalary(401)
                         .setPosition(new Position().setId(3).setName("Programmer3"))
         );
-        String input = "ftg";
-        when(employeeRepositoryMock.findAll())
-                .thenReturn(expectedRepositoryOut);
+
+        String input = "Programmer2";
+        when(positionRepositoryMock.getPositionByName(input))
+                .thenReturn(new Position().setId(2).setName("Programmer2"));
+//        when(employeeRepositoryMock.findAll())
+//                .thenReturn(expectedRepositoryOut);
+        when(employeeRepositoryMock.getEmployeesOnPosition(anyInt()))
+                .thenReturn(expectedMethodOut.stream().map(EmployeeMapper::toEmployee).toList());
 
         List<EmployeeDTO> actual = employeeService.getEmployeesOnPosition(input);
         assertEquals(expectedMethodOut, actual);
-        verify(employeeRepositoryMock, times(1)).findAll();
+        verify(employeeRepositoryMock, times(1)).getEmployeesOnPosition(anyInt());
     }
 
     @Test

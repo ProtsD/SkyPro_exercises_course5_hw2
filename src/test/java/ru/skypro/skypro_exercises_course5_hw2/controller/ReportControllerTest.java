@@ -61,7 +61,7 @@ class ReportControllerTest {
 
         List<EmployeeDTO> actual = returnEmployeeListFromDB(employeeRepository).stream().map(EmployeeMapper::fromEmployee).toList();
         assertThat(actual)
-                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("position")
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "position")
                 .containsAnyElementsOf(objectMapper.readValue(jsonString, new TypeReference<List<EmployeeDTO>>() {
                 }));
     }

@@ -14,6 +14,9 @@ import ru.skypro.skypro_exercises_course5_hw2.repository.EmployeeRepository;
 import ru.skypro.skypro_exercises_course5_hw2.repository.PositionRepository;
 import ru.skypro.skypro_exercises_course5_hw2.service.EmployeeService;
 
+import java.lang.reflect.Array;
+import java.util.Set;
+
 import static AuxiliaryData.EmployeeAuxiliaryData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
