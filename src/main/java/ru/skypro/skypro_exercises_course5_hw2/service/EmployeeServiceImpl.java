@@ -100,10 +100,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                     .map(EmployeeMapper::fromEmployee)
                     .toList();
         } else {
-            System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
-            employeeRepository.getEmployeesOnPosition(position.getId()).stream()
-                    .map(EmployeeMapper::fromEmployee)
-                    .forEach(System.out::println);
             EmployeeDTOList = employeeRepository.getEmployeesOnPosition(position.getId()).stream()
                     .map(EmployeeMapper::fromEmployee)
                     .toList();
